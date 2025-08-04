@@ -3,8 +3,11 @@ import { useState,useEffect } from "react"
 import { Link } from "react-router-dom";
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 import Login from './Login'
+import Logout from "./Logout";
+import { useAuth } from "../context/AuthProvider";
 
 function Header() {
+  const [authUser, setAuthUser] = useAuth();
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") || "light"
   );
@@ -127,11 +130,18 @@ function Header() {
                 </label>
               </div>
             </div>
-            <a className="btn mx-2 bg-black text-white rounded-md hover:bg-zinc-800 duration:300 curser-pointer"
+            {authUser ? (
+              <Logout />
+            ) : (
+              <div className="">
+                 <a className="btn mx-2 bg-black text-white rounded-md hover:bg-zinc-800 duration:300 curser-pointer"
             onClick={() => document.getElementById("my_modal_5").showModal()}>
               LogIn
             </a>
-            <Login />
+                <Login />
+              </div>
+            )}
+
           </div>
         </div>
       </div>

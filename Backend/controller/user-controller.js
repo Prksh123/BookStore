@@ -18,7 +18,11 @@ export const signup = async(req,res) => {
                 })
                 let token = jwt.sign({email,userId: createdUser._id},"shshsh");
                 res.cookie("token",token);
-                res.status(201).json({message: "User created successfully"});
+                res.status(201).json({message: "User created successfully",user:{
+                    _id: createdUser._id,
+                    name: createdUser.name,
+                    email: createdUser.email
+                }});
         });
     });
     } catch (error) {
@@ -38,6 +42,8 @@ export const login = async (req,res) => {
            if(!result){
                res.status(400).json({meaasge: "Something went wrong"});
            }
+           let token = jwt.sign({email: user.email,userId: user._id},"shshsh");
+           res.cookie("token",token);
             res.status(200).json({message: "User logged in successfully", user: {
                 _id:user._id,
                 name:user.name,

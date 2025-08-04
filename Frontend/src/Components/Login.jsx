@@ -1,6 +1,8 @@
 import React from "react";
+
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
 
 function login() {
   const {
@@ -16,10 +18,16 @@ function login() {
       await axios.post("http://localhost:4001/user/login",userData)
       .then((res) => {
         if(res.data){
-          alert("Successfully Login");
+          toast.success("Loggedin Successfully");
+          document.getElementById("my_modal_5").close();
+          setTimeout(() => {
+            window.location.reload();
+            localStorage.setItem("Users", JSON.stringify(res.data.user));
+          }, 1000);          
         }
       }).catch((err) => {
-        alert("Error: " +err);
+        toast.error("Error: " +err.response.data.meaasage);
+        setTimeout(() => {}, 2000);;
       })
   }
 

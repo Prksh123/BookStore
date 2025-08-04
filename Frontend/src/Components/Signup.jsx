@@ -1,9 +1,14 @@
 import React from 'react'
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import Login from './Login'
 import axios from 'axios';
 import { useForm } from "react-hook-form";
+import toast from 'react-hot-toast';
 
 function Signup() {
+    const location = useLocation();
+    const navigate = useNavigate(); 
+    const from = location.state?.from?.pathname || "/";
      const {
         register,
         handleSubmit,
@@ -18,10 +23,12 @@ function Signup() {
         await axios.post("http://localhost:4001/user/signup", userData)
         .then((res) => {
           if(res.data){
-            alert("Successfully signup");
+            toast.success("Signup Successfully");
+            localStorage.setItem("Users",JSON.stringify(res.data.user));
+            navigate(from, { replace: true });
           }
         }).catch((err) => {
-          alert("Error :" + err.response.data.message);
+          toast.error("Error: " +err.response.data.meaasage);
         })
       }
   return (
@@ -29,7 +36,7 @@ function Signup() {
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md bg-white p-8 rounded-2xl shadow-lg">
         <div className='flex justify-end'>
-        <a href="/" className='text-xl text-black-400'>&#x2715;</a>
+        <Link to="/" className='text-xl text-black-400'>&#x2715;</Link>
         </div>
         <h2 className="text-2xl font-bold text-gray-700 mb-6 text-center">
           Create an Account
