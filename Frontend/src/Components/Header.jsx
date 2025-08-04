@@ -6,6 +6,7 @@ import Login from './Login'
 import Logout from "./Logout";
 import { useAuth } from "../context/AuthProvider";
 
+
 function Header() {
   const [authUser, setAuthUser] = useAuth();
   const [theme, setTheme] = useState(
@@ -115,18 +116,13 @@ function Header() {
               </div>
               <div>
                 <label className="swap swap-rotate">
-                  {/* this hidden checkbox controls the state */}
                   <input
                     type="checkbox"
-                    className="theme-controller"
-                    value="synthwave"
+                    onChange={toggleTheme}
+                    checked={theme === "dark"}
                   />
-
-                  {/* sun icon */}
-                  <SunIcon className="h-6 w-6 text-yellow-500 swap-off" onClick={toggleTheme} />
-
-                  {/* moon icon */}
-                  <MoonIcon className="h-6 w-6 text-gray-300 swap-on" onClick={toggleTheme}/>
+                  <SunIcon className="h-6 w-6 text-yellow-500 swap-on" />
+                  <MoonIcon className="h-6 w-6 text-gray-300 swap-off" />
                 </label>
               </div>
             </div>

@@ -2,11 +2,13 @@ import React from "react";
 import banner from "../Used/banner.jpg"
 
 function Banner() {
+  const user = JSON.parse(localStorage.getItem("Users"));
   return (
     <>
       <div className="max-w-screen-2xl container mx-auto md:px-20 px-4 pt-3.5 flex flex-col md:flex-row mt-18 ">
-        <div className="w-full md:w-1/2 mt-6  md:mt-32 order-2 md:order-1   ">
+        <div className="w-full md:w-1/2 mt-4  md:mt-32 order-2 md:order-1   ">
           <div className="space-y-6 md:space-y-10">
+            {user &&  <h1 className="text-3xl font-semibold font-sans text-green-400">Hii {user?.name}</h1>}
             <h1 className="text-4xl font-bold tracking:tighter">
               Welcome our website to enjoy the best experience{" "}
               <span className="text-green-400">while learning !!</span>{" "}

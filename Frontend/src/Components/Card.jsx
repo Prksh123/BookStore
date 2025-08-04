@@ -1,7 +1,6 @@
 import React from 'react'
 
 function Card({item,width}) {
-    console.log(item);
   return (
     <div className='mt-4 mx-4'>
         <div className="card bg-base-100 w-{width} shadow-xl transform transition-transform duration-300 hover:scale-105">
