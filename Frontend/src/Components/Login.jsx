@@ -2,9 +2,11 @@ import React from "react";
 
 import axios from "axios";
 import { useForm } from "react-hook-form";
+import { useUserStore } from "../store/useUserStore";
 import toast from "react-hot-toast";
 
 function login() {
+  const setUser = useUserStore((state) => state.setUser);
   const {
     register,
     handleSubmit,
@@ -15,20 +17,25 @@ function login() {
         "email": data.email,
         "password": data.password
       }
-      await axios.post("http://localhost:4001/user/login",userData)
-      .then((res) => {
-        if(res.data){
-          toast.success("Loggedin Successfully");
+      try{
+      const res = await axios.post("http://localhost:4001/user/login",userData,{
+        withCredentials: true,  
+       })
+        if (res.data && res.data.user && res.data.token) {
+          setUser(res.data.user);
+          localStorage.setItem("Token", res.data.token); 
+          toast.success("Logged in Successfully");
           document.getElementById("my_modal_5").close();
           setTimeout(() => {
             window.location.reload();
-            localStorage.setItem("Users", JSON.stringify(res.data.user));
-          }, 1000);          
+          }, 1000);
+        } else {
+          toast.error("Login failed: invalid response from server");
         }
-      }).catch((err) => {
-        toast.error("Error: " +err.response.data.meaasage);
-        setTimeout(() => {}, 2000);;
-      })
+      } catch (err) {
+        toast.error("Error: " + (err.response?.data?.message || err.message));
+        document.getElementById("my_modal_5").close();
+      }
   }
 
   return (

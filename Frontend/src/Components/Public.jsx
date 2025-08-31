@@ -12,8 +12,8 @@ function Public() {
   useEffect(() => {
     const getBook = async () => {
       try {
-        const res = await axios.get('http://localhost:4001/book');
-        setBook(res.data.filter((data) => data.catagory === 'Free'));
+        const res = await axios.get('http://localhost:4001/book?type=free');
+        setBook(res.data);
       } catch (error) {
         console.error("Error:", error);
       }

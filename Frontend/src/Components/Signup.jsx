@@ -14,23 +14,32 @@ function Signup() {
         handleSubmit,
         formState: { errors },
       } = useForm();
-      const onSubmit = async (data) => {
-         const userData = {
-          "name" : data.name,
-          "email": data.email,
-          "password": data.password
-         }
-        await axios.post("http://localhost:4001/user/signup", userData)
-        .then((res) => {
-          if(res.data){
-            toast.success("Signup Successfully");
-            localStorage.setItem("Users",JSON.stringify(res.data.user));
-            navigate(from, { replace: true });
-          }
-        }).catch((err) => {
-          toast.error("Error: " +err.response.data.meaasage);
-        })
-      }
+const onSubmit = async (data) => {
+  const userData = {
+    name: data.name,
+    email: data.email,
+    password: data.password
+  };
+
+  try {
+    const res = await axios.post("http://localhost:4001/user/signup", userData, {
+      withCredentials: true
+    });
+
+    if (res.data && res.data.token) {
+      localStorage.setItem("Token", res.data.token);
+
+      toast.success("Signup Successfully");
+
+      navigate(from, { replace: true });
+    } else {
+      toast.error("Signup failed: invalid response from server");
+    }
+  } catch (err) {
+    toast.error("Error: " + (err.response?.data?.message || err.message));
+  }
+};
+
   return (
     <>
     <div className="min-h-screen flex items-center justify-center bg-gray-100">

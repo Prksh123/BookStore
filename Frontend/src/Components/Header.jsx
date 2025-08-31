@@ -1,14 +1,13 @@
-import React from "react";
 import { useState,useEffect } from "react"
 import { Link } from "react-router-dom";
 import { SunIcon, MoonIcon } from '@heroicons/react/24/solid';
 import Login from './Login'
 import Logout from "./Logout";
-import { useAuth } from "../context/AuthProvider";
+import { useUserStore } from "../store/useUserStore";
 
 
 function Header() {
-  const [authUser, setAuthUser] = useAuth();
+  const user = useUserStore((state) => state.user);
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") || "light"
   );
@@ -126,7 +125,7 @@ function Header() {
                 </label>
               </div>
             </div>
-            {authUser ? (
+            {user ? (
               <Logout />
             ) : (
               <div className="">

@@ -1,16 +1,19 @@
 import React from "react";
-import { useAuth } from "../context/AuthProvider";
+import axios from "axios";
+import { useUserStore } from "../store/useUserStore";
 import toast from "react-hot-toast";
 
 function Logout() {
-  const [authUser, setAuthUser] = useAuth();
-  const handleLogout = () => {
+  const { clearUser } = useUserStore();
+  const handleLogout = async() => {
     try {
+      await axios.post("http://localhost:4001/user/logout", {}, { withCredentials: true });
+      clearUser();
       setAuthUser({
         ...authUser,
         user: null,
       });
-      localStorage.removeItem("Users");
+      localStorage.removeItem("Token");
       toast.success("Logout successfully");
 
       setTimeout(() => {
